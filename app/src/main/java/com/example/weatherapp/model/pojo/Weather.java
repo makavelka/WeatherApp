@@ -1,118 +1,97 @@
 
 package com.example.weatherapp.model.pojo;
 
-import java.util.ArrayList;
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class Weather {
 
-    @SerializedName("city")
+    @SerializedName("id")
     @Expose
-    private City city;
-    @SerializedName("cod")
+    private Double id;
+    @SerializedName("main")
     @Expose
-    private String cod;
-    @SerializedName("message")
+    private String main;
+    @SerializedName("description")
     @Expose
-    private Double message;
-    @SerializedName("cnt")
+    private String description;
+    @SerializedName("icon")
     @Expose
-    private Integer cnt;
-    @SerializedName("list")
-    @Expose
-    private java.util.List<com.example.weatherapp.model.pojo.List> list = new ArrayList<com.example.weatherapp.model.pojo.List>();
+    private String icon;
 
     /**
      * 
      * @return
-     *     The city
+     *     The id
      */
-    public City getCity() {
-        return city;
+    public Double getId() {
+        return id;
     }
 
     /**
      * 
-     * @param city
-     *     The city
+     * @param id
+     *     The id
      */
-    public void setCity(City city) {
-        this.city = city;
+    public void setId(Double id) {
+        this.id = id;
     }
 
     /**
      * 
      * @return
-     *     The cod
+     *     The main
      */
-    public String getCod() {
-        return cod;
+    public String getMain() {
+        return main;
     }
 
     /**
      * 
-     * @param cod
-     *     The cod
+     * @param main
+     *     The main
      */
-    public void setCod(String cod) {
-        this.cod = cod;
-    }
-
-    /**
-     * 
-     * @return
-     *     The message
-     */
-    public Double getMessage() {
-        return message;
-    }
-
-    /**
-     * 
-     * @param message
-     *     The message
-     */
-    public void setMessage(Double message) {
-        this.message = message;
+    public void setMain(String main) {
+        this.main = main;
     }
 
     /**
      * 
      * @return
-     *     The cnt
+     *     The description
      */
-    public Integer getCnt() {
-        return cnt;
+    public String getDescription() {
+        return description;
     }
 
     /**
      * 
-     * @param cnt
-     *     The cnt
+     * @param description
+     *     The description
      */
-    public void setCnt(Integer cnt) {
-        this.cnt = cnt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
      * 
      * @return
-     *     The list
+     *     The icon
      */
-    public java.util.List<com.example.weatherapp.model.pojo.List> getList() {
-        return list;
+    public String getIcon() {
+        return icon;
     }
 
     /**
      * 
-     * @param list
-     *     The list
+     * @param icon
+     *     The icon
      */
-    public void setList(java.util.List<com.example.weatherapp.model.pojo.List> list) {
-        this.list = list;
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
 }

@@ -1,9 +1,10 @@
 
 package com.example.weatherapp.model.pojo;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import javax.annotation.Generated;
 
 @Generated("org.jsonschema2pojo")
 public class Wind {
@@ -14,6 +15,9 @@ public class Wind {
     @SerializedName("deg")
     @Expose
     private Double deg;
+    @SerializedName("gust")
+    @Expose
+    private Double gust;
 
     /**
      * 
@@ -49,6 +53,24 @@ public class Wind {
      */
     public void setDeg(Double deg) {
         this.deg = deg;
+    }
+
+    /**
+     * 
+     * @return
+     *     The gust
+     */
+    public Double getGust() {
+        return gust;
+    }
+
+    /**
+     * 
+     * @param gust
+     *     The gust
+     */
+    public void setGust(Double gust) {
+        this.gust = gust;
     }
 
 }
