@@ -3,8 +3,9 @@ package com.example.weatherapp.model;
 import com.example.weatherapp.Const;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.api.ApiInterface;
-import com.example.weatherapp.model.pojo.CurrentWeather;
-import com.example.weatherapp.model.pojo.FiveDaysWeather;
+import com.example.weatherapp.model.pojo.flickr.Flickr;
+import com.example.weatherapp.model.pojo.weather.CurrentWeather;
+import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -56,5 +57,12 @@ public class ModelImpl implements Model {
     @Override
     public boolean checkIfDataExistInDb() {
         return false;
+    }
+
+    @Override
+    public Observable<Flickr> getImages(String city) {
+        return apiInterface.getImages(city, 1, 1)
+                .subscribeOn(ioThread)
+                .observeOn(uiThread);
     }
 }

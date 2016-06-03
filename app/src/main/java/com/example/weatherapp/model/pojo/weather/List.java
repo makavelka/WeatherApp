@@ -1,5 +1,5 @@
 
-package com.example.weatherapp.model.pojo;
+package com.example.weatherapp.model.pojo.weather;
 
 import java.util.ArrayList;
 import javax.annotation.Generated;

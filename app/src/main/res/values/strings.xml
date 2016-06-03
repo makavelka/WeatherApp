@@ -4,4 +4,5 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="first_tab">Прогноз на сегодня</string>
     <string name="second_tab">Прогноз на 5 дней</string>
+    <string name="no_data">Не удалось получить данные</string>
 </resources>

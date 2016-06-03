@@ -1,5 +1,5 @@
 
-package com.example.weatherapp.model.pojo;
+package com.example.weatherapp.model.pojo.weather;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -25,7 +25,7 @@ public class FiveDaysWeather {
     private Double cnt;
     @SerializedName("list")
     @Expose
-    private java.util.List<com.example.weatherapp.model.pojo.List> list = new ArrayList<com.example.weatherapp.model.pojo.List>();
+    private java.util.List<List> list = new ArrayList<List>();
 
     /**
      * 
@@ -104,7 +104,7 @@ public class FiveDaysWeather {
      * @return
      *     The list
      */
-    public java.util.List<com.example.weatherapp.model.pojo.List> getList() {
+    public java.util.List<List> getList() {
         return list;
     }
 
@@ -113,7 +113,7 @@ public class FiveDaysWeather {
      * @param list
      *     The list
      */
-    public void setList(java.util.List<com.example.weatherapp.model.pojo.List> list) {
+    public void setList(java.util.List<List> list) {
         this.list = list;
     }
 

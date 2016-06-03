@@ -1,7 +1,8 @@
 package com.example.weatherapp.model;
 
-import com.example.weatherapp.model.pojo.CurrentWeather;
-import com.example.weatherapp.model.pojo.FiveDaysWeather;
+import com.example.weatherapp.model.pojo.flickr.Flickr;
+import com.example.weatherapp.model.pojo.weather.CurrentWeather;
+import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 
 import rx.Observable;
 
@@ -11,4 +12,5 @@ public interface Model {
     Observable<FiveDaysWeather> getFiveDaysWeather(String city);
     void getData();
     boolean checkIfDataExistInDb();
+    Observable<Flickr> getImages(String city);
 }

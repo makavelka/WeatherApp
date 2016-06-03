@@ -4,11 +4,53 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.CurrentWeatherFragment">
 
+    <RelativeLayout
+        android:id="@+id/data_layout_currentFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/background_imageView_currentFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/temp_textView_currentFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:textSize="96dp"
+        tools:text="25°" />
+
     <TextView
         android:id="@+id/city_textView_currentFragment"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_below="@+id/temp_textView_currentFragment"
         android:layout_centerHorizontal="true"
-        android:text="@string/first_tab" />
+        tools:text="Moscow" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/type_textView_currentFragment"
+        android:textSize="24dp"
+        tools:text="cloud"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/city_textView_currentFragment"
+        android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/noData_textView_currentFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:layout_centerInParent="true"
+        android:text="@string/no_data"/>
 
 </RelativeLayout>

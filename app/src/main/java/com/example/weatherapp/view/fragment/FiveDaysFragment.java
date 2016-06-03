@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.weatherapp.R;
-import com.example.weatherapp.model.pojo.FiveDaysWeather;
+import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 import com.example.weatherapp.view.FiveDaysWeatherView;
 
 import java.util.List;

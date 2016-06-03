@@ -1,6 +1,6 @@
 package com.example.weatherapp.view;
 
-import com.example.weatherapp.model.pojo.FiveDaysWeather;
+import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 
 import java.util.List;
 
