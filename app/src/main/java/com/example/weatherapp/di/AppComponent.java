@@ -3,13 +3,20 @@ package com.example.weatherapp.di;
 import com.example.weatherapp.Utils;
 import com.example.weatherapp.di.module.ApiModule;
 import com.example.weatherapp.di.module.AppModule;
+import com.example.weatherapp.di.module.ModelModule;
 import com.example.weatherapp.di.module.PresenterModule;
 import com.example.weatherapp.di.module.UtilsModule;
+import com.example.weatherapp.di.module.ViewModule;
+import com.example.weatherapp.model.ModelImpl;
 import com.example.weatherapp.model.api.ApiService;
 import com.example.weatherapp.model.api.HttpClient;
 import com.example.weatherapp.model.api.PicassoService;
 import com.example.weatherapp.model.api.ResponseCacheInterceptor;
+import com.example.weatherapp.presenter.CurrentPresenterImpl;
+import com.example.weatherapp.presenter.FiveDaysPresenterImpl;
 import com.example.weatherapp.view.MainActivity;
+import com.example.weatherapp.view.fragment.CurrentWeatherFragment;
+import com.example.weatherapp.view.fragment.FiveDaysFragment;
 
 import javax.inject.Singleton;
 
@@ -21,7 +28,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {AppModule.class, UtilsModule.class, PresenterModule.class, ApiModule.class})
+@Component(modules = {AppModule.class, UtilsModule.class, PresenterModule.class, ApiModule.class, ViewModule.class, ModelModule.class})
 public interface AppComponent {
     void inject(MainActivity activity);
 
@@ -35,5 +42,14 @@ public interface AppComponent {
 
     void inject(PicassoService picassoService);
 
+    void inject(ModelImpl model);
+
+    void inject(CurrentWeatherFragment fragment);
+
+    void inject(FiveDaysFragment fragment);
+
+    void inject(CurrentPresenterImpl presenter);
+
+    void inject(FiveDaysPresenterImpl presenter);
 
 }

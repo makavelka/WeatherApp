@@ -1,6 +1,5 @@
 package com.example.weatherapp.di.module;
 
-import com.example.weatherapp.model.Model;
 import com.example.weatherapp.model.ModelImpl;
 
 import javax.inject.Singleton;
@@ -18,7 +17,7 @@ public class PresenterModule {
      */
     @Provides
     @Singleton
-    Model provideDataRepository() {
+    ModelImpl provideDataRepository() {
         return new ModelImpl();
     }
 
