@@ -1,5 +1,6 @@
 package com.example.weatherapp.model.api;
 
+import com.example.weatherapp.Const;
 import com.example.weatherapp.di.App;
 
 import javax.inject.Inject;
@@ -29,7 +30,7 @@ public class ApiService {
         //Создание экземпляра Retrofit
         Retrofit.Builder builder = new Retrofit.Builder()
                 //Установка базового url
-//                .baseUrl(Const.BASE_URL)
+                .baseUrl(Const.BASE_URL)
                 //Установка стандартного клиента
                 .client(mHttpClient)
                 //Установка фабрики, которая будет конвертировать полученные данные в POJO
