@@ -1,7 +1,11 @@
 package com.example.weatherapp.view;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
@@ -23,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Bind(R.id.tabs_mainActivity)
     TabLayout mTabLayout;
 
+    private int REQUEST_ACCESS_FINE_LOCATION = 123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,5 +49,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         adapter.addFragment(new FiveDaysFragment(), getString(R.string.second_tab));
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
+    }
+
+    @Override
+    public void requestPermission() {
+        boolean isLocationsEnabled = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (!isLocationsEnabled) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_ACCESS_FINE_LOCATION);
+        }
     }
 }

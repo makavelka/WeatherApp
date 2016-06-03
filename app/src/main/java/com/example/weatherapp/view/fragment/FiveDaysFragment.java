@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.weatherapp.R;
-import com.example.weatherapp.view.IView;
+import com.example.weatherapp.model.pojo.FiveDaysWeather;
+import com.example.weatherapp.view.FiveDaysWeatherView;
 
-public class FiveDaysFragment extends Fragment implements IView {
+import java.util.List;
+
+public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -22,5 +25,20 @@ public class FiveDaysFragment extends Fragment implements IView {
     @Override
     public void showToast(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showWeather(List<FiveDaysWeather> list) {
+
+    }
+
+    @Override
+    public void showNoData() {
+
+    }
+
+    @Override
+    public void showError(String error) {
+        showToast(error);
     }
 }
