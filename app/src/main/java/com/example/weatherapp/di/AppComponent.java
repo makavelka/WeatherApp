@@ -9,11 +9,13 @@ import com.example.weatherapp.di.module.UtilsModule;
 import com.example.weatherapp.di.module.ViewModule;
 import com.example.weatherapp.model.ModelImpl;
 import com.example.weatherapp.model.api.ApiService;
+import com.example.weatherapp.model.api.GoogleApi;
 import com.example.weatherapp.model.api.HttpClient;
 import com.example.weatherapp.model.api.PicassoService;
 import com.example.weatherapp.model.api.ResponseCacheInterceptor;
 import com.example.weatherapp.presenter.CurrentPresenterImpl;
 import com.example.weatherapp.presenter.FiveDaysPresenterImpl;
+import com.example.weatherapp.presenter.MainPresenterImpl;
 import com.example.weatherapp.view.MainActivity;
 import com.example.weatherapp.view.fragment.CurrentWeatherFragment;
 import com.example.weatherapp.view.fragment.FiveDaysFragment;
@@ -51,5 +53,9 @@ public interface AppComponent {
     void inject(CurrentPresenterImpl presenter);
 
     void inject(FiveDaysPresenterImpl presenter);
+
+    void inject(GoogleApi googleApi);
+
+    void inject(MainPresenterImpl presenter);
 
 }

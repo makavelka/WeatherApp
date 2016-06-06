@@ -60,8 +60,8 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public Observable<Flickr> getImages(String city) {
-        return apiInterface.getImages(city, 1, 1)
+    public Observable<Flickr> getImages(double lat, double lon) {
+        return apiInterface.getImages(Const.FLICKR_URL, 1, 1, lat, lon)
                 .subscribeOn(ioThread)
                 .observeOn(uiThread);
     }

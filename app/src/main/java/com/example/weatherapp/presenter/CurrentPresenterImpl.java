@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
-import com.example.weatherapp.model.pojo.flickr.Flickr;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
 import com.example.weatherapp.view.CurrentWeatherView;
 import com.example.weatherapp.view.IView;
@@ -55,31 +54,6 @@ public class CurrentPresenterImpl implements CurrentPresenter {
                         } else {
                             mView.showNoData();
                         }
-                    }
-                });
-    }
-
-    @Override
-    public void getImagesList(String city) {
-        Subscription subscription = Subscriptions.empty();
-        if (!subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        subscription = mModel.getImages(city)
-                .subscribe(new Observer<Flickr>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(Flickr flickr) {
-                        mView.showBackground(flickr.getPhotos().getPhoto().get(0).getUrlO());
                     }
                 });
     }

@@ -18,7 +18,7 @@
             android:id="@+id/city_editText_mainActivity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -26,16 +26,28 @@
         android:id="@+id/tabs_mainActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
-        app:tabGravity="fill"/>
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
 
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager_mainActivity"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v4.view.ViewPager>
+        <ImageView
+            android:id="@+id/background_imageView_mainActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager_mainActivity"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+
+
+    </RelativeLayout>
 </LinearLayout>
 
 

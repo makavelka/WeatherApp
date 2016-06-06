@@ -6,5 +6,4 @@ public interface CurrentWeatherView extends IView {
     void showWeather(CurrentWeather weather);
     void showNoData();
     void showError(String error);
-    void showBackground(String url);
 }

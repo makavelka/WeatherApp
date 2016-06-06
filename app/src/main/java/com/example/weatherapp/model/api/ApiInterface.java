@@ -7,6 +7,7 @@ import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -20,9 +21,10 @@ public interface ApiInterface {
     @GET("forecast?units=metric&apikey=8278cb9d20902f4ec47ce3eec5dffdd1")
     Observable<FiveDaysWeather> getWeatherForFiveDays(@Query("q") String city);
 
-    @GET("services/rest/?method=flickr.photos.search&api_key=49dad1ba5c2a832dba3c1ace307eeb56" +
-            "&format=json&" +
-            "nojsoncallback=1" +
-            "&extras=url_m")
-    Observable<Flickr> getImages(@Query("text") String query, @Query("page") int page, @Query("per_page") int perPage);
+    @GET
+    Observable<Flickr> getImages(@Url String url,
+                                 @Query("page") int page,
+                                 @Query("per_page") int perPage,
+                                 @Query("lat") double lat,
+                                 @Query("lon") double lon);
 }

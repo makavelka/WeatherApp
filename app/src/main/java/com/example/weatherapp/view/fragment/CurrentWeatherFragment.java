@@ -49,7 +49,6 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
         App.getComponent().inject(this);
         mPresenter.onCreate(savedInstanceState, this);
         mPresenter.getData("Владикавказ");
-        mPresenter.getImagesList("Vladikavkaz");
     }
 
     @Override
@@ -84,10 +83,4 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
         showToast(error);
     }
 
-    @Override
-    public void showBackground(String url) {
-        mPicasso.with(getActivity())
-                .load(url)
-                .into(mBackground);
-    }
 }

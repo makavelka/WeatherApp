@@ -12,5 +12,5 @@ public interface Model {
     Observable<FiveDaysWeather> getFiveDaysWeather(String city);
     void getData();
     boolean checkIfDataExistInDb();
-    Observable<Flickr> getImages(String city);
+    Observable<Flickr> getImages(double lat, double lon);
 }
