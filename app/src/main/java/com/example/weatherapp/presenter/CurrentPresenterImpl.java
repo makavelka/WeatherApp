@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
+import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
 import com.example.weatherapp.view.CurrentWeatherView;
 import com.example.weatherapp.view.IView;
 
@@ -30,6 +31,9 @@ public class CurrentPresenterImpl implements CurrentPresenter {
 
     @Override
     public void getData(String city) {
+        if (mModel.getLastWeatherByCity(city) != null) {
+            mView.showWeather(mModel.getLastWeatherByCity(city));
+        }
         Subscription subscription = Subscriptions.empty();
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();
@@ -51,6 +55,10 @@ public class CurrentPresenterImpl implements CurrentPresenter {
                         if (currentWeather != null) {
                             mCurrentWeather = currentWeather;
                             mView.showWeather(currentWeather);
+                            SimpleCurrentWeather simpleCurrentWeather = new SimpleCurrentWeather(currentWeather.getName(),
+                                    currentWeather.getWeather().get(0).getMain(),
+                                    currentWeather.getMain().getTemp().toString());
+                            mModel.saveToDb(simpleCurrentWeather);
                         } else {
                             mView.showNoData();
                         }

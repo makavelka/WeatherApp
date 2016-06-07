@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.weatherapp.R;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
+import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
 import com.example.weatherapp.presenter.CurrentPresenterImpl;
 import com.example.weatherapp.view.CurrentWeatherView;
 import com.squareup.picasso.Picasso;
@@ -70,6 +71,14 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
         mCity.setText(currentWeather.getName());
         mTemp.setText(String.valueOf(currentWeather.getMain().getTemp().intValue()) + "°");
         mType.setText(currentWeather.getWeather().get(0).getMain());
+    }
+
+    @Override
+    public void showWeather(SimpleCurrentWeather weather) {
+        mNoData.setVisibility(View.GONE);
+        mCity.setText(weather.getCity());
+        mTemp.setText(weather.getTemp() + "°");
+        mType.setText(weather.getType());
     }
 
     @Override

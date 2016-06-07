@@ -1,9 +1,12 @@
 package com.example.weatherapp.view;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +21,10 @@ import com.example.weatherapp.di.App;
 import com.example.weatherapp.presenter.MainPresenterImpl;
 import com.example.weatherapp.view.fragment.CurrentWeatherFragment;
 import com.example.weatherapp.view.fragment.FiveDaysFragment;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import javax.inject.Inject;
@@ -25,7 +32,8 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     @Bind(R.id.viewPager_mainActivity)
     ViewPager mViewPager;
@@ -40,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     Picasso mPicasso;
     @Inject
     MainPresenterImpl mPresenter;
+    private GoogleApiClient mGoogleApiClient;
 
 
     private final int REQUEST_ACCESS_FINE_LOCATION = 123;
@@ -53,7 +62,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         ButterKnife.bind(this);
         loadFragmentsToViewPager();
         requestPermission();
-        mPresenter.getImagesList(55.751244, 37.618423);
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
+
     }
 
     @Override
@@ -76,6 +92,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (!isLocationsEnabled) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_ACCESS_FINE_LOCATION);
+            return;
+        }
+        LatLng latLng = mPresenter.getLastKnownLocation();
+        if (latLng == null) {
+            return;
+        } else {
+            mPresenter.getImagesList(latLng.latitude, latLng.longitude);
         }
     }
 
@@ -84,6 +107,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
         switch (requestCode) {
             case REQUEST_ACCESS_FINE_LOCATION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LatLng latLng = mPresenter.getLastKnownLocation();
+                    if (latLng != null) {
+                        mPresenter.getImagesList(latLng.latitude, latLng.longitude);
+                    }
                 } else {
                     showToast(getString(R.string.permission_denied_location));
                 }
@@ -100,5 +127,44 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 .fit()
                 .centerInside()
                 .into(mBackground);
+    }
+
+    @Override
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                mGoogleApiClient);
+        if (mLastLocation != null) {
+            Intent intent = new Intent();
+            intent.putExtra("Longitude", mLastLocation.getLongitude());
+            intent.putExtra("Latitude", mLastLocation.getLatitude());
+            setResult(1,intent);
+            finish();
+
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        connectionResult.getErrorMessage();
     }
 }

@@ -1,9 +1,12 @@
 package com.example.weatherapp.di.module;
 
 
+import android.content.Context;
+
 import com.example.weatherapp.Const;
 import com.example.weatherapp.model.api.ApiInterface;
 import com.example.weatherapp.model.api.ApiService;
+import com.example.weatherapp.model.db.WeatherDBDataSource;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -53,6 +56,12 @@ public class ModelModule {
     @Singleton
     ApiInterface provideApiService() {
         return new ApiService().getApiService();
+    }
+
+    @Provides
+    @Singleton
+    WeatherDBDataSource providesWeatherDb(Context context) {
+        return new WeatherDBDataSource(context);
     }
 
 }

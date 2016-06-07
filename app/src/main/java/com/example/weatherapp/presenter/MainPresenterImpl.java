@@ -1,12 +1,19 @@
 package com.example.weatherapp.presenter;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
 import com.example.weatherapp.model.pojo.flickr.Flickr;
 import com.example.weatherapp.view.IView;
 import com.example.weatherapp.view.MainView;
+import com.google.android.gms.maps.model.LatLng;
 
 import javax.inject.Inject;
 
@@ -18,6 +25,8 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Inject
     ModelImpl mModel;
+    @Inject
+    Context mContext;
 
     private MainView mView;
 
@@ -53,6 +62,24 @@ public class MainPresenterImpl implements MainPresenter {
                         mView.showBackground(flickr.getPhotos().getPhoto().get(0).getUrlO());
                     }
                 });
+    }
+
+    @Override
+    public LatLng getLastKnownLocation() {
+        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        if (ActivityCompat.checkSelfPermission(mContext,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return null;
+        }
+        Location lastlocation = locationManager.getLastKnownLocation(locationProvider);
+        if (lastlocation != null) {
+            return new LatLng(lastlocation.getLatitude(), lastlocation.getLongitude());
+        } else {
+            return null;
+        }
+
     }
 
     @Override
