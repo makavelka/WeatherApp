@@ -52,30 +52,6 @@ public class WeatherDBDataSource {
         }
         return arrayList.get(arrayList.size()-1);
     }
-//
-//    public SimpleCurrentWeather getLastWeatherByCity(String city) {
-//        ArrayList<SimpleCurrentWeather> arrayList = getWeatherByCity(city);
-//        if (arrayList.size() == 0) {
-//            return null;
-//        }
-//        return arrayList.get(arrayList.size()-1);
-//    }
-
-//    public ArrayList<SimpleCurrentWeather> getWeatherByCity(String city) {
-//        String sqlQuery = "select * "
-//                + "from weathers ";
-////                + "where city = ?";
-//        ArrayList<SimpleCurrentWeather> weathers = getAllWeathers();
-//
-//        Cursor cursor = mDatabase.rawQuery(sqlQuery, null);
-////        Cursor cursor = mDatabase.query(WeatherDBHelper.TABLE_CURRENT_WEATHER, mAllColumns, "city=?", new String[] { city }, null, null, null);
-//        while (!cursor.isAfterLast()) {
-//            weathers.add(cursorToWeather(cursor));
-//            cursor.moveToNext();
-//        }
-//        cursor.close();
-//        return weathers;
-//    }
 
     public void addWeather(String city, String type, double temp) {
         ContentValues values = new ContentValues();

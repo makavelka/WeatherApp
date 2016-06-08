@@ -1,9 +1,12 @@
 package com.example.weatherapp.model.pojo.weather;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Ghost Surfer on 08.06.2016.
  */
-public class SimpleCurrentWeather {
+public class SimpleCurrentWeather implements Parcelable {
     private String city;
     private String type;
     private String temp;
@@ -40,4 +43,35 @@ public class SimpleCurrentWeather {
     public void setTemp(String temp) {
         this.temp = temp;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.city);
+        dest.writeString(this.type);
+        dest.writeString(this.temp);
+    }
+
+    protected SimpleCurrentWeather(Parcel in) {
+        this.city = in.readString();
+        this.type = in.readString();
+        this.temp = in.readString();
+    }
+
+    public static final Parcelable.Creator<SimpleCurrentWeather> CREATOR = new Parcelable.Creator<SimpleCurrentWeather>() {
+        @Override
+        public SimpleCurrentWeather createFromParcel(Parcel source) {
+            return new SimpleCurrentWeather(source);
+        }
+
+        @Override
+        public SimpleCurrentWeather[] newArray(int size) {
+            return new SimpleCurrentWeather[size];
+        }
+    };
 }
