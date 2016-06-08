@@ -146,16 +146,16 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
                 .into(mBackground, new Callback() {
                     @Override
                     public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
                         mPicasso.with(MainActivity.this)
                                 .load(url)
                                 .fit()
                                 .centerInside()
                                 .into(mBackground);
-                    }
-
-                    @Override
-                    public void onError() {
-
                     }
                 });
 

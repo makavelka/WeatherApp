@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.example.weatherapp.GeocoderUtils;
-import com.example.weatherapp.R;
 import com.example.weatherapp.Utils;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
@@ -51,10 +50,10 @@ public class FiveDaysPresenterImpl implements FiveDaysPresenter {
         if (simpleWeather.size() > 0) {
             mView.showWeather(simpleWeather);
         }
-        if (mUtils.isInternetConnected()) {
-            mView.showToast(mContext.getString(R.string.no_internet));
-            return;
-        }
+//        if (mUtils.isInternetConnected()) {
+//            mView.showToast(mContext.getString(R.string.no_internet));
+//            return;
+//        }
         if (city == null) {
             return;
         }
