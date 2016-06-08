@@ -14,6 +14,9 @@ public class SimpleWeather {
         this.temp = stringBuilder.toString();
     }
 
+    public SimpleWeather() {
+    }
+
     public String getTemp() {
         return temp;
     }

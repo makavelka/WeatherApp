@@ -54,8 +54,8 @@ public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_five_days, container, false);
-        mPresenter.getData("Vladikavkaz");
         ButterKnife.bind(this, v);
+        mPresenter.getData("Vladikavkaz");
         return v;
     }
 

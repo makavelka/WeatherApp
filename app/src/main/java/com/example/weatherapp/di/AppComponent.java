@@ -13,6 +13,10 @@ import com.example.weatherapp.model.api.GoogleApi;
 import com.example.weatherapp.model.api.HttpClient;
 import com.example.weatherapp.model.api.PicassoService;
 import com.example.weatherapp.model.api.ResponseCacheInterceptor;
+import com.example.weatherapp.model.db.FiveDaysWeatherDBDataSource;
+import com.example.weatherapp.model.db.FiveDaysWeatherDBHelper;
+import com.example.weatherapp.model.db.WeatherDBDataSource;
+import com.example.weatherapp.model.db.WeatherDBHelper;
 import com.example.weatherapp.presenter.CurrentPresenterImpl;
 import com.example.weatherapp.presenter.FiveDaysPresenterImpl;
 import com.example.weatherapp.presenter.MainPresenterImpl;
@@ -57,5 +61,13 @@ public interface AppComponent {
     void inject(GoogleApi googleApi);
 
     void inject(MainPresenterImpl presenter);
+
+    void inject(FiveDaysWeatherDBHelper helper);
+
+    void inject (WeatherDBHelper helper);
+
+    void inject (FiveDaysWeatherDBDataSource dbDataSource);
+
+    void inject (WeatherDBDataSource dbDataSource);
 
 }

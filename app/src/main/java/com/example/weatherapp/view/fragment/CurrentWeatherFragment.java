@@ -49,7 +49,6 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
         mPresenter.onCreate(savedInstanceState, this);
-        mPresenter.getData("Владикавказ");
     }
 
     @Override
@@ -57,6 +56,7 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_current_weather, container, false);
         ButterKnife.bind(this, v);
+        mPresenter.getData("Vladikavkaz");
         return v;
     }
 

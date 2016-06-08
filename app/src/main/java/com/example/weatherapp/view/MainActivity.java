@@ -1,7 +1,6 @@
 package com.example.weatherapp.view;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -24,6 +23,8 @@ import com.example.weatherapp.view.fragment.FiveDaysFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
@@ -67,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
 
@@ -148,14 +151,12 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
-        if (mLastLocation != null) {
-            Intent intent = new Intent();
-            intent.putExtra("Longitude", mLastLocation.getLongitude());
-            intent.putExtra("Latitude", mLastLocation.getLatitude());
-            setResult(1,intent);
-            finish();
-
-        }
+        Places.GeoDataApi.getPlaceById(mGoogleApiClient, "ChIJhSxoJzyuEmsR9gBDBR09ZrE").setResultCallback(places -> {
+            if (places.getStatus().isSuccess() && places.getCount() > 0) {
+                final Place myPlace = places.get(0);
+            }
+            places.release();
+        });
     }
 
     @Override

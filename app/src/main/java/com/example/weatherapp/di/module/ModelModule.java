@@ -6,7 +6,10 @@ import android.content.Context;
 import com.example.weatherapp.Const;
 import com.example.weatherapp.model.api.ApiInterface;
 import com.example.weatherapp.model.api.ApiService;
+import com.example.weatherapp.model.db.FiveDaysWeatherDBDataSource;
+import com.example.weatherapp.model.db.FiveDaysWeatherDBHelper;
 import com.example.weatherapp.model.db.WeatherDBDataSource;
+import com.example.weatherapp.model.db.WeatherDBHelper;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -60,8 +63,26 @@ public class ModelModule {
 
     @Provides
     @Singleton
-    WeatherDBDataSource providesWeatherDb(Context context) {
-        return new WeatherDBDataSource(context);
+    WeatherDBDataSource providesWeatherDb() {
+        return new WeatherDBDataSource();
+    }
+
+    @Provides
+    @Singleton
+    FiveDaysWeatherDBDataSource providesFiveDaysWeatherDb() {
+        return new FiveDaysWeatherDBDataSource();
+    }
+
+    @Provides
+    @Singleton
+    FiveDaysWeatherDBHelper providesFiveDaysHelper(Context context) {
+        return new FiveDaysWeatherDBHelper(context);
+    }
+
+    @Provides
+    @Singleton
+    WeatherDBHelper providesWeatherHelper(Context context) {
+        return new WeatherDBHelper(context);
     }
 
 }

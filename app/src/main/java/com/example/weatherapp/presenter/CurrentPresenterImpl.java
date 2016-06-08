@@ -31,8 +31,9 @@ public class CurrentPresenterImpl implements CurrentPresenter {
 
     @Override
     public void getData(String city) {
-        if (mModel.getLastWeatherByCity(city) != null) {
-            mView.showWeather(mModel.getLastWeatherByCity(city));
+        SimpleCurrentWeather simpleCurrentWeather = mModel.getLastWeather();
+        if (simpleCurrentWeather != null) {
+            mView.showWeather(simpleCurrentWeather);
         }
         Subscription subscription = Subscriptions.empty();
         if (!subscription.isUnsubscribed()) {
@@ -57,7 +58,7 @@ public class CurrentPresenterImpl implements CurrentPresenter {
                             mView.showWeather(currentWeather);
                             SimpleCurrentWeather simpleCurrentWeather = new SimpleCurrentWeather(currentWeather.getName(),
                                     currentWeather.getWeather().get(0).getMain(),
-                                    currentWeather.getMain().getTemp().toString());
+                                    String.valueOf(currentWeather.getMain().getTemp().intValue()));
                             mModel.saveToDb(simpleCurrentWeather);
                         } else {
                             mView.showNoData();

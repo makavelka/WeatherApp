@@ -3,11 +3,15 @@ package com.example.weatherapp.model;
 import com.example.weatherapp.Const;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.api.ApiInterface;
+import com.example.weatherapp.model.db.FiveDaysWeatherDBDataSource;
 import com.example.weatherapp.model.db.WeatherDBDataSource;
 import com.example.weatherapp.model.pojo.flickr.Flickr;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
 import com.example.weatherapp.model.pojo.weather.FiveDaysWeather;
 import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
+import com.example.weatherapp.model.pojo.weather.SimpleWeather;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,6 +25,8 @@ public class ModelImpl implements Model {
     protected ApiInterface apiInterface;
     @Inject
     WeatherDBDataSource mDbDataSource;
+    @Inject
+    FiveDaysWeatherDBDataSource mFiveDaysDataSource;
 
     @Inject
     @Named(Const.UI_THREAD)
@@ -56,7 +62,7 @@ public class ModelImpl implements Model {
     @Override
     public SimpleCurrentWeather getData(String city) {
         if (checkIfDataExistInDb()) {
-            return getLastWeatherByCity(city);
+            return getLastWeather();
         } else {
             return null;
         }
@@ -90,10 +96,19 @@ public class ModelImpl implements Model {
     }
 
     @Override
-    public SimpleCurrentWeather getLastWeatherByCity(String city) {
-        mDbDataSource.open();
-        SimpleCurrentWeather simpleCurrentWeather = mDbDataSource.getLastWeatherByCity(city);
-        mDbDataSource.close();
-        return simpleCurrentWeather;
+    public void saveToDb(ArrayList<SimpleWeather> simpleWeathers) {
+        mFiveDaysDataSource.open();
+        for (SimpleWeather s: simpleWeathers) {
+            mFiveDaysDataSource.addWeather(s);
+        }
+        mFiveDaysDataSource.close();
+    }
+
+    @Override
+    public ArrayList<SimpleWeather> getLastFiveDaysWeather() {
+        mFiveDaysDataSource.open();
+        ArrayList<SimpleWeather> arrayList = mFiveDaysDataSource.getLastWeather();
+        mFiveDaysDataSource.close();
+        return arrayList;
     }
 }

@@ -1,21 +1,27 @@
 package com.example.weatherapp.model.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 public class WeatherDBDataSource {
+
+    @Inject
+    WeatherDBHelper mDbHelper;
+
     private SQLiteDatabase mDatabase;
-    private final WeatherDBHelper mDbHelper;
     private String[] mAllColumns = {WeatherDBHelper.COLUMN_ID, WeatherDBHelper.COLUMN_CITY, WeatherDBHelper.COLUMN_TYPE, WeatherDBHelper.COLUMN_TEMP};
 
-    public WeatherDBDataSource(Context context) { mDbHelper = WeatherDBHelper.getInstance(context);
+    public WeatherDBDataSource() {
+        App.getComponent().inject(this);
     }
 
     public void open() throws SQLException {
@@ -41,27 +47,35 @@ public class WeatherDBDataSource {
 
     public SimpleCurrentWeather getLastWeather() {
         ArrayList<SimpleCurrentWeather> arrayList = getAllWeathers();
-        return arrayList.get(arrayList.size()-1);
-    }
-
-    public SimpleCurrentWeather getLastWeatherByCity(String city) {
-        ArrayList<SimpleCurrentWeather> arrayList = getWeatherByCity(city);
         if (arrayList.size() == 0) {
             return null;
         }
         return arrayList.get(arrayList.size()-1);
     }
+//
+//    public SimpleCurrentWeather getLastWeatherByCity(String city) {
+//        ArrayList<SimpleCurrentWeather> arrayList = getWeatherByCity(city);
+//        if (arrayList.size() == 0) {
+//            return null;
+//        }
+//        return arrayList.get(arrayList.size()-1);
+//    }
 
-    public ArrayList<SimpleCurrentWeather> getWeatherByCity(String city) {
-        ArrayList<SimpleCurrentWeather> weathers = new ArrayList<>();
-        Cursor cursor = mDatabase.query(WeatherDBHelper.TABLE_CURRENT_WEATHER, mAllColumns, "city=" + city, new String[] { city }, null, null, null);
-        while (!cursor.isAfterLast()) {
-            weathers.add(cursorToWeather(cursor));
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return weathers;
-    }
+//    public ArrayList<SimpleCurrentWeather> getWeatherByCity(String city) {
+//        String sqlQuery = "select * "
+//                + "from weathers ";
+////                + "where city = ?";
+//        ArrayList<SimpleCurrentWeather> weathers = getAllWeathers();
+//
+//        Cursor cursor = mDatabase.rawQuery(sqlQuery, null);
+////        Cursor cursor = mDatabase.query(WeatherDBHelper.TABLE_CURRENT_WEATHER, mAllColumns, "city=?", new String[] { city }, null, null, null);
+//        while (!cursor.isAfterLast()) {
+//            weathers.add(cursorToWeather(cursor));
+//            cursor.moveToNext();
+//        }
+//        cursor.close();
+//        return weathers;
+//    }
 
     public void addWeather(String city, String type, double temp) {
         ContentValues values = new ContentValues();
@@ -91,9 +105,13 @@ public class WeatherDBDataSource {
 
     private SimpleCurrentWeather cursorToWeather(Cursor cursor) {
         SimpleCurrentWeather data = new SimpleCurrentWeather();
-        data.setCity(cursor.getString(1));
-        data.setType(cursor.getString(2));
-        data.setTemp(cursor.getString(3));
+        try {
+            data.setCity(cursor.getString(1));
+            data.setType(cursor.getString(2));
+            data.setTemp(cursor.getString(3));
+        } catch (Exception  e) {
+            e.printStackTrace();
+        }
         return data;
     }
 }
