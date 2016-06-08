@@ -35,7 +35,7 @@ public class CurrentPresenterImpl implements CurrentPresenter {
     private CurrentWeatherView mView;
     private final String BUNDLE_CURRENT_KEY = "BUNDLE_CURRENT_KEY";
     private Subscription subscription = Subscriptions.empty();
-    private CurrentWeather mCurrentWeather;
+    private SimpleCurrentWeather mSimpleCurrentWeather;
 
 
     public CurrentPresenterImpl() {
@@ -51,10 +51,6 @@ public class CurrentPresenterImpl implements CurrentPresenter {
         if (simpleCurrentWeather != null) {
             mView.showWeather(simpleCurrentWeather);
         }
-//        if (mUtils.isInternetConnected()) {
-//            mView.showToast(mContext.getString(R.string.no_internet));
-//            return;
-//        }
         if (city == null) {
             return;
         }
@@ -77,11 +73,11 @@ public class CurrentPresenterImpl implements CurrentPresenter {
                     @Override
                     public void onNext(CurrentWeather currentWeather) {
                         if (currentWeather != null) {
-                            mCurrentWeather = currentWeather;
                             mView.showWeather(currentWeather);
                             SimpleCurrentWeather simpleCurrentWeather = new SimpleCurrentWeather(currentWeather.getName(),
                                     currentWeather.getWeather().get(0).getMain(),
                                     String.valueOf(currentWeather.getMain().getTemp().intValue()));
+                            mSimpleCurrentWeather = simpleCurrentWeather;
                             mModel.saveToDb(simpleCurrentWeather);
                         } else {
                             mView.showNoData();
@@ -94,16 +90,17 @@ public class CurrentPresenterImpl implements CurrentPresenter {
     public void onCreate(Bundle savedInstanceState, IView view) {
         mView = (CurrentWeatherView) view;
         if (savedInstanceState != null) {
-//            Weather weather = savedInstanceState.getSerializable(BUNDLE_CURRENT_KEY);
-//            if (mArrayList != null) {
-//                mView.showMarkers(mArrayList);
-//            }
+            mSimpleCurrentWeather = savedInstanceState.getParcelable(BUNDLE_CURRENT_KEY);
+            if (mSimpleCurrentWeather != null) {
+                mView.showWeather(mSimpleCurrentWeather);
+            }
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        if (mSimpleCurrentWeather != null)
+            outState.putParcelable(BUNDLE_CURRENT_KEY, mSimpleCurrentWeather);
     }
 
     @Override

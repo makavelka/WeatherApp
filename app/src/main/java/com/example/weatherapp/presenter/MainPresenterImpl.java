@@ -32,6 +32,8 @@ public class MainPresenterImpl implements MainPresenter {
     Utils mUtils;
 
     private MainView mView;
+    private String mUrl;
+    private final String BUNDLE_URL_KEY = "BUNDLE_URL_KEY";
 
     public MainPresenterImpl() {
         App.getComponent().inject(this);
@@ -67,6 +69,7 @@ public class MainPresenterImpl implements MainPresenter {
                     @Override
                     public void onNext(Flickr flickr) {
                         mView.showBackground(flickr.getPhotos().getPhoto().get(0).getUrlO());
+                        mUrl = flickr.getPhotos().getPhoto().get(0).getUrlO();
                     }
                 });
     }
@@ -93,16 +96,17 @@ public class MainPresenterImpl implements MainPresenter {
     public void onCreate(Bundle savedInstanceState, IView view) {
         mView = (MainView) view;
         if (savedInstanceState != null) {
-//            Weather weather = savedInstanceState.getSerializable(BUNDLE_CURRENT_KEY);
-//            if (mArrayList != null) {
-//                mView.showMarkers(mArrayList);
-//            }
+            mUrl = savedInstanceState.getString(BUNDLE_URL_KEY);
+            if (mUrl != null) {
+                mView.showBackground(mUrl);
+            }
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        if (mUrl != null)
+            outState.putString(BUNDLE_URL_KEY, mUrl);
     }
 
     @Override

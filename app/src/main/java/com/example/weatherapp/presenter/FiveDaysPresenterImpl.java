@@ -34,8 +34,9 @@ public class FiveDaysPresenterImpl implements FiveDaysPresenter {
     Context mContext;
 
     private FiveDaysWeatherView mView;
-    private final String BUNDLE_CURRENT_KEY = "BUNDLE_CURRENT_KEY";
+    private final String BUNDLE_FIVE_DAYS_KEY = "BUNDLE_FIVE_DAYS_KEY";
     private Subscription subscription = Subscriptions.empty();
+    private ArrayList<SimpleWeather> mSimpleWeathers;
 
     public FiveDaysPresenterImpl() {
         App.getComponent().inject(this);
@@ -43,6 +44,7 @@ public class FiveDaysPresenterImpl implements FiveDaysPresenter {
 
     @Inject
     ModelImpl mModel;
+
 
     @Override
     public void getData(String city) {
@@ -110,6 +112,7 @@ public class FiveDaysPresenterImpl implements FiveDaysPresenter {
         }
         mModel.saveToDb(simpleWeathers);
         mView.showWeather(simpleWeathers);
+        mSimpleWeathers = simpleWeathers;
     }
 
     @Override
@@ -132,16 +135,17 @@ public class FiveDaysPresenterImpl implements FiveDaysPresenter {
     public void onCreate(Bundle savedInstanceState, IView view) {
         mView = (FiveDaysWeatherView) view;
         if (savedInstanceState != null) {
-//            Weather weather = savedInstanceState.getSerializable(BUNDLE_CURRENT_KEY);
-//            if (mArrayList != null) {
-//                mView.showMarkers(mArrayList);
-//            }
+            mSimpleWeathers = (ArrayList<SimpleWeather>) savedInstanceState.getSerializable(BUNDLE_FIVE_DAYS_KEY);
+            if (mSimpleWeathers != null) {
+                mView.showWeather(mSimpleWeathers);
+            }
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-
+        if (mSimpleWeathers != null)
+            outState.putSerializable(BUNDLE_FIVE_DAYS_KEY, mSimpleWeathers);
     }
 
     @Override
