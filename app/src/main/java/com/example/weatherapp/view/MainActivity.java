@@ -28,6 +28,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -140,7 +142,23 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
                 .load(url)
                 .fit()
                 .centerInside()
-                .into(mBackground);
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(mBackground, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        mPicasso.with(MainActivity.this)
+                                .load(url)
+                                .fit()
+                                .centerInside()
+                                .into(mBackground);
+                    }
+
+                    @Override
+                    public void onError() {
+
+                    }
+                });
+
     }
 
     @OnClick(R.id.setCity_button_mainActivity)
