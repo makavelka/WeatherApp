@@ -14,11 +14,30 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <EditText
-            android:id="@+id/city_editText_mainActivity"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
+            android:orientation="horizontal">
+
+            <Button
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:id="@+id/setCity_button_mainActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/done" />
+
+            <EditText
+                android:id="@+id/city_editText_mainActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:hint="@string/enter_city"
+                android:layout_toLeftOf="@+id/setCity_button_mainActivity"
+                android:layout_toStartOf="@+id/setCity_button_mainActivity" />
+
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 

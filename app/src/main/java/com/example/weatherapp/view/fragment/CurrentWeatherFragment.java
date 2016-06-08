@@ -13,11 +13,15 @@ import android.widget.Toast;
 
 import com.example.weatherapp.R;
 import com.example.weatherapp.di.App;
+import com.example.weatherapp.model.pojo.event.CityEvent;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
 import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
 import com.example.weatherapp.presenter.CurrentPresenterImpl;
 import com.example.weatherapp.view.CurrentWeatherView;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import javax.inject.Inject;
 
@@ -30,6 +34,8 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
     CurrentPresenterImpl mPresenter;
     @Inject
     Picasso mPicasso;
+    @Inject
+    EventBus mEventBus;
 
     @Bind(R.id.city_textView_currentFragment)
     TextView mCity;
@@ -44,11 +50,14 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
     @Bind(R.id.background_imageView_currentFragment)
     ImageView mBackground;
 
+    private String mCityString;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         App.getComponent().inject(this);
         mPresenter.onCreate(savedInstanceState, this);
+        mEventBus.register(this);
     }
 
     @Override
@@ -56,7 +65,7 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_current_weather, container, false);
         ButterKnife.bind(this, v);
-        mPresenter.getData("Vladikavkaz");
+        mPresenter.getData(mCityString);
         return v;
     }
 
@@ -92,4 +101,15 @@ public class CurrentWeatherFragment extends Fragment implements CurrentWeatherVi
         showToast(error);
     }
 
+    @Subscribe
+    public void onEvent(CityEvent event) {
+        mCityString = event.getCity();
+        mPresenter.getData(event.getCity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mEventBus.unregister(this);
+    }
 }

@@ -15,11 +15,15 @@ import android.widget.Toast;
 
 import com.example.weatherapp.R;
 import com.example.weatherapp.di.App;
+import com.example.weatherapp.model.pojo.event.CityEvent;
 import com.example.weatherapp.model.pojo.weather.SimpleWeather;
 import com.example.weatherapp.presenter.FiveDaysPresenterImpl;
 import com.example.weatherapp.view.FiveDaysWeatherView;
 import com.example.weatherapp.view.SimpleAdapter;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,8 @@ public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
     Picasso mPicasso;
     @Inject
     FiveDaysPresenterImpl mPresenter;
+    @Inject
+    EventBus mEventBus;
 
     @Bind(R.id.noData_textView_fiveDaysFragment)
     TextView mNoData;
@@ -43,10 +49,12 @@ public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
     @Bind(R.id.temp_recyclerView_fiveDaysFragment)
     RecyclerView mRecyclerView;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         App.getComponent().inject(this);
         mPresenter.onCreate(savedInstanceState, this);
+        mEventBus.register(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -55,7 +63,7 @@ public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_five_days, container, false);
         ButterKnife.bind(this, v);
-        mPresenter.getData("Vladikavkaz");
+//        mPresenter.getData(mCity);
         return v;
     }
 
@@ -82,4 +90,14 @@ public class FiveDaysFragment extends Fragment implements FiveDaysWeatherView {
         showToast(error);
     }
 
+    @Subscribe
+    public void onEvent(CityEvent event) {
+        mPresenter.getData(event.getCity());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mEventBus.unregister(this);
+    }
 }

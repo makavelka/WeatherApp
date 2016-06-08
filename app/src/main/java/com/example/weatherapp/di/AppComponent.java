@@ -1,5 +1,6 @@
 package com.example.weatherapp.di;
 
+import com.example.weatherapp.GeocoderUtils;
 import com.example.weatherapp.Utils;
 import com.example.weatherapp.di.module.ApiModule;
 import com.example.weatherapp.di.module.AppModule;
@@ -69,5 +70,7 @@ public interface AppComponent {
     void inject (FiveDaysWeatherDBDataSource dbDataSource);
 
     void inject (WeatherDBDataSource dbDataSource);
+
+    void inject (GeocoderUtils geocoderUtils);
 
 }

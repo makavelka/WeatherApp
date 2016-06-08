@@ -15,23 +15,30 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.weatherapp.GeocoderUtils;
 import com.example.weatherapp.R;
 import com.example.weatherapp.di.App;
+import com.example.weatherapp.model.pojo.event.CityEvent;
+import com.example.weatherapp.model.pojo.event.LatLngEvent;
 import com.example.weatherapp.presenter.MainPresenterImpl;
 import com.example.weatherapp.view.fragment.CurrentWeatherFragment;
 import com.example.weatherapp.view.fragment.FiveDaysFragment;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements MainView, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
@@ -49,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
     Picasso mPicasso;
     @Inject
     MainPresenterImpl mPresenter;
+    @Inject
+    GeocoderUtils mGeocoder;
+    @Inject
+    EventBus mEventBus;
+
     private GoogleApiClient mGoogleApiClient;
 
 
@@ -72,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
-
     }
 
     @Override
@@ -132,6 +143,22 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
                 .into(mBackground);
     }
 
+    @OnClick(R.id.setCity_button_mainActivity)
+    @Override
+    public void setCityManual() {
+        try {
+            LatLng latLng = mGeocoder.getLatLngByName(mCity.getText().toString());
+            if (latLng != null) {
+                mPresenter.getImagesList(latLng.latitude, latLng.longitude);
+                mEventBus.post(new CityEvent(mCity.getText().toString()));
+            } else {
+                mCity.setError(getString(R.string.city_not_found));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onStart() {
         mGoogleApiClient.connect();
@@ -149,14 +176,12 @@ public class MainActivity extends AppCompatActivity implements MainView, GoogleA
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        Places.GeoDataApi.getPlaceById(mGoogleApiClient, "ChIJhSxoJzyuEmsR9gBDBR09ZrE").setResultCallback(places -> {
-            if (places.getStatus().isSuccess() && places.getCount() > 0) {
-                final Place myPlace = places.get(0);
-            }
-            places.release();
-        });
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            mEventBus.post(new LatLngEvent(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+        } else {
+            showToast(getString(R.string.need_city));
+        }
     }
 
     @Override

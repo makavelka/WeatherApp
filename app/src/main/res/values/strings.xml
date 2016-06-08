@@ -6,4 +6,9 @@
     <string name="second_tab">Прогноз на 5 дней</string>
     <string name="no_data">Не удалось получить данные</string>
     <string name="permission_denied_location">Доступ к сервису GPS запрещен</string>
+    <string name="done">Готово</string>
+    <string name="enter_city">Введите название города</string>
+    <string name="city_not_found">Город не найден</string>
+    <string name="need_city">Необходимо ввести название города вручную</string>
+    <string name="no_internet">Отсутствует подключение к интернету</string>
 </resources>

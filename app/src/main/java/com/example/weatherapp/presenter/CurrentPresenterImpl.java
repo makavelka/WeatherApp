@@ -1,13 +1,22 @@
 package com.example.weatherapp.presenter;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import com.example.weatherapp.GeocoderUtils;
+import com.example.weatherapp.R;
+import com.example.weatherapp.Utils;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
+import com.example.weatherapp.model.pojo.event.LatLngEvent;
 import com.example.weatherapp.model.pojo.weather.CurrentWeather;
 import com.example.weatherapp.model.pojo.weather.SimpleCurrentWeather;
 import com.example.weatherapp.view.CurrentWeatherView;
 import com.example.weatherapp.view.IView;
+
+import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -17,10 +26,18 @@ import rx.subscriptions.Subscriptions;
 
 public class CurrentPresenterImpl implements CurrentPresenter {
 
+    @Inject
+    GeocoderUtils mGeocoderUtils;
+    @Inject
+    Utils mUtils;
+    @Inject
+    Context mContext;
+
     private CurrentWeatherView mView;
     private final String BUNDLE_CURRENT_KEY = "BUNDLE_CURRENT_KEY";
     private Subscription subscription = Subscriptions.empty();
     private CurrentWeather mCurrentWeather;
+
 
     public CurrentPresenterImpl() {
         App.getComponent().inject(this);
@@ -34,6 +51,13 @@ public class CurrentPresenterImpl implements CurrentPresenter {
         SimpleCurrentWeather simpleCurrentWeather = mModel.getLastWeather();
         if (simpleCurrentWeather != null) {
             mView.showWeather(simpleCurrentWeather);
+        }
+        if (mUtils.isInternetConnected()) {
+            mView.showToast(mContext.getString(R.string.no_internet));
+            return;
+        }
+        if (city == null) {
+            return;
         }
         Subscription subscription = Subscriptions.empty();
         if (!subscription.isUnsubscribed()) {
@@ -86,5 +110,22 @@ public class CurrentPresenterImpl implements CurrentPresenter {
     @Override
     public void onStop() {
 
+    }
+
+
+    @Override
+    public String getCity(double lat, double lon) {
+        String name = null;
+        try {
+            name = mGeocoderUtils.getNameByLatLng(lat, lon);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
+
+    @Subscribe
+    public void onEvent(LatLngEvent event) {
+        getData(getCity(event.getLat(), event.getLon()));
     }
 }

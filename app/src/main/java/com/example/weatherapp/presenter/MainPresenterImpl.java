@@ -8,6 +8,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
+import com.example.weatherapp.R;
+import com.example.weatherapp.Utils;
 import com.example.weatherapp.di.App;
 import com.example.weatherapp.model.ModelImpl;
 import com.example.weatherapp.model.pojo.flickr.Flickr;
@@ -27,6 +29,8 @@ public class MainPresenterImpl implements MainPresenter {
     ModelImpl mModel;
     @Inject
     Context mContext;
+    @Inject
+    Utils mUtils;
 
     private MainView mView;
 
@@ -41,6 +45,10 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void getImagesList(double lat, double lon) {
+        if (mUtils.isInternetConnected()) {
+            mView.showToast(mContext.getString(R.string.no_internet));
+            return;
+        }
         Subscription subscription = Subscriptions.empty();
         if (!subscription.isUnsubscribed()) {
             subscription.unsubscribe();

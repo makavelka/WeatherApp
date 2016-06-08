@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.example.weatherapp.di.App;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -28,4 +30,8 @@ public class AppModule {
         return mApp;
     }
 
+    @Provides
+    EventBus provideEventBus() {
+        return EventBus.getDefault();
+    }
 }
